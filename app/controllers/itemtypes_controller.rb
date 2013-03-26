@@ -32,11 +32,18 @@ class ItemtypesController < ApplicationController
             "script_field" => "_source.properties['name']",
             "size" => 100
           }
+        },
+        "properties" => {
+            "terms" => {
+                "script_field" => "_source.itemprops",
+                "size" => 100
+            }
         }
       }       
     )
     @hits = response.hits
     @names = response.facets['name']['terms']
+    @properties = response.facets['properties']['terms']
   end
 end
 

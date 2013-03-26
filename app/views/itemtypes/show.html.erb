@@ -1,6 +1,16 @@
 <h1>Itemtype: <%= params['id'] %></h1>
 
+<h2>Properties Facet</h2>
+
+<%= render :partial => 'facet', :locals => {:facet => @properties} %>
+
+<hr>
+
+<h2>Names Facet</h2>
 <%= render :partial => 'facet', :locals => {:facet => @names} %>
+
+<hr>
+
 
 
 <ul>
