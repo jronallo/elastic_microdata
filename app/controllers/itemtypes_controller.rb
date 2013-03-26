@@ -4,7 +4,14 @@ class ItemtypesController < ApplicationController
       :query => {
         :match_all => { },
         
-      }, :facets => {:type => {:terms =>  {:field => :type}}}
+      }, :facets => {
+        :type => {
+          :terms =>  {
+            "script_field" => "_source.type",
+            "size" => 10
+          }
+        }
+      }
     )
     @itemtypes = response.facets['type']['terms']
   end
@@ -15,15 +22,21 @@ class ItemtypesController < ApplicationController
     from = @page.to_i * 25
     response = ESCLIENT.search(
       :query => {
-        :term => {
-          :type => params['id']
-        }      
+        "bool" => {"must" => [{"query_string" => {"default_field" => "resource.type","query" => params['id']}}]}     
       },
-        :size => 25,
-        :from => from  
-      
+      :size => 25,
+      :from => from, 
+      :facets => {
+        :name => {
+          :terms =>  {
+            "script_field" => "_source.properties['name']",
+            "size" => 100
+          }
+        }
+      }       
     )
     @hits = response.hits
+    @names = response.facets['name']['terms']
   end
 end
 

@@ -1,6 +1,7 @@
 <h1>Itemtypes</h1>
+
 <ol>
-  <% @itemtypes.each do |itemtype| %>
-    <li><%= link_to itemtype['term'], itemtype_path(itemtype['term']) %> (<%= itemtype['count'] %>)</li>
+  <% @itemtypes.each do |value| %>
+    <li><%= link_to value['term'], itemtype_path(value['term'].split('/').last) %> (<%= value['count'] %>)</li>
   <% end -%>
 </ol>
