@@ -1,0 +1,24 @@
+<h1>Itemtype: <%= params['id'] %></h1>
+
+
+
+
+<ul>
+  <% @hits.each do |hit| %>
+    <li>
+      <% if !hit.properties['name'].blank? %>
+        <%= hit.properties['name'].join(" AND ")  %>
+      <% else %>
+        <%= debug hit.properties %>
+      <% end -%>
+      <% if !hit.properties['image'].blank? %>
+        <%= image_tag hit.properties['image'].first, :width => 400 %>
+      <% end -%>
+      <%#= debug hit.properties %>
+    </li>
+  <% end -%>
+</ul>
+
+<%= link_to 'next page', itemtype_path(params['id'], :page => @page + 1) %>
+
+<p>Count: <%= @hits.size %></p>

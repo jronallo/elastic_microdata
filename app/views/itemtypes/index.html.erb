@@ -1,0 +1,6 @@
+<h1>Itemtypes</h1>
+<ol>
+  <% @itemtypes.each do |itemtype| %>
+    <li><%= link_to itemtype['term'], itemtype_path(itemtype['term']) %> (<%= itemtype['count'] %>)</li>
+  <% end -%>
+</ol>
