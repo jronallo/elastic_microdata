@@ -17,7 +17,11 @@
   <% @hits.each do |hit| %>
     <li>
       <% if !hit.properties['name'].blank? %>
-        <%= hit.properties['name'].join(" AND ")  %>
+        <% if !hit.properties['name'].blank? %>
+          <%= link_to hit.properties['name'].join(" AND "), hit.properties['url'].first %>
+        <% else %>
+          <%= hit.properties['name'].join(" AND ") %>
+        <% end -%>
       <% else %>
         <%= debug hit.properties %>
       <% end -%>

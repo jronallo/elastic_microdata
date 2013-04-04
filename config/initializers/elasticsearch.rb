@@ -1,1 +1,0 @@
-ESCLIENT = ElasticSearch.new('http://127.0.0.1:9200', :index => "resources", :type => "resource")

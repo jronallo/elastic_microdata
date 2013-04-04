@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-gem 'rubberband'
+gem 'tire'
+gem 'nokogiri'
+gem 'microdata'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
