@@ -1,49 +1,52 @@
 class ItemtypesController < ApplicationController
   def index
-    response = ESCLIENT.search(
+    search = Tire.search(
+      'pages',
       :query => {
-        :match_all => { },
-        
-      }, :facets => {
+        :match_all => { },        
+      }, 
+      :facets => {
         :type => {
           :terms =>  {
-            "script_field" => "_source.type",
-            "size" => 10
+            "field" => "itemtypes",
+            "size" => 25
           }
         }
       }
     )
-    @itemtypes = response.facets['type']['terms']
+    @itemtypes = search.results.facets['type']['terms']
   end
 
   def show
     page = params["page"] || 1
     @page = page.to_i
-    from = @page.to_i * 25
-    response = ESCLIENT.search(
+    from = (@page.to_i - 1) * 25
+    query_string = %Q|http://schema.org/#{params[:id]}|
+    search = Tire.search(
+      :pages,
       :query => {
-        "bool" => {"must" => [{"query_string" => {"default_field" => "resource.type","query" => params['id']}}]}     
+        :term => {
+          :itemtypes => query_string
+        },        
       },
       :size => 25,
-      :from => from, 
-      :facets => {
-        :name => {
-          :terms =>  {
-            "script_field" => "_source.properties['name']",
-            "size" => 100
-          }
-        },
-        "properties" => {
-            "terms" => {
-                "script_field" => "_source.itemprops",
-                "size" => 100
-            }
-        }
-      }       
+      :from => from      
     )
-    @hits = response.hits
-    @names = response.facets['name']['terms']
-    @properties = response.facets['properties']['terms']
+    # TODO: here's an alternate query that seemed to work
+    # search = Tire.search(
+    #   :pages,
+    #   :query => {
+    #     :match_all => { },        
+    #   },
+    #   :filter => {
+    #     "and" => [
+    #       { "terms" => {"itemtypes" => [query_string]} }
+    #     ]
+    #   },
+    #   :size => 25,
+    #   :from => from      
+    # )
+    @results = search.results
   end
 end
 

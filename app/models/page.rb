@@ -2,12 +2,14 @@ class Page
 
   include Tire::Model::Persistence
 
-  property :url
-  property :title
-  property :description
-  property :microdata, :type => :nested
-  property :itemtypes, :type => :array
-  property :itemprops, :type => :array
+  
+
+  property :url, :type => :string, :index => :not_analyzed
+  property :title, :type => :string
+  property :description, :type => :string
+  property :microdata, :type => :object
+  property :itemtypes, :type => :string, :index => :not_analyzed
+  property :itemprops, :type => :string, :index => :not_analyzed
 
   def self.build(url, html)
     items = Microdata::Document.new(html, url).extract_items
@@ -34,3 +36,5 @@ class Page
   end
 
 end
+
+Page.tire.create_elasticsearch_index
