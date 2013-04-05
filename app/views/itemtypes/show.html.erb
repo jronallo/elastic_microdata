@@ -18,9 +18,9 @@
     <li>
       <%#= debug hit %>
       <%= link_to page.id, page.id, target: '_blank' %> 
-      <pre>
-        <%= binding.pry; JSON.pretty_generate(hit['_source']['microdata']).gsub("\n", "<br>").html_safe %>
-      </pre>
+<pre>
+<%= JSON.pretty_generate(hit['_source']['microdata']).gsub("\n", "<br>").html_safe %>
+</pre>
     </li>
   <% end -%>
 </ul>

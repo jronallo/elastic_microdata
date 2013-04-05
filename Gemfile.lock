@@ -32,13 +32,6 @@ GEM
     arel (3.0.2)
     builder (3.0.4)
     coderay (1.0.9)
-    coffee-rails (3.2.2)
-      coffee-script (>= 2.2.0)
-      railties (~> 3.2.0)
-    coffee-script (2.2.0)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.6.2)
     em-websocket (0.5.0)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.5.3)
@@ -110,6 +103,7 @@ GEM
     rake (10.0.4)
     rb-inotify (0.9.0)
       ffi (>= 0.5.0)
+    rb-readline (0.4.2)
     rdoc (3.12.2)
       json (~> 1.4)
     rest-client (1.6.7)
@@ -149,7 +143,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  coffee-rails (~> 3.2.1)
   guard-livereload
   jquery-rails
   microdata
@@ -157,6 +150,7 @@ DEPENDENCIES
   pry-rails
   rails (= 3.2.13)
   rb-inotify (~> 0.9)
+  rb-readline
   sass-rails (~> 3.2.3)
   sqlite3
   tire
