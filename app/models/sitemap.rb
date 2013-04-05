@@ -22,7 +22,11 @@ class Sitemap
   private
 
   def index_sitemap(sitemap_xml)
-    sitemap = Zlib::GzipReader.new( StringIO.new(sitemap_xml) ).read
+    begin
+      sitemap = Zlib::GzipReader.new( StringIO.new(sitemap_xml) ).read
+    rescue => e
+      sitemap = sitemap_xml
+    end
     Nokogiri::HTML(sitemap).xpath('//loc').each_with_index do |loc, index|
       url = loc.content
       open(url) do |f|
