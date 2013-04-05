@@ -23,17 +23,12 @@ class Sitemap
 
   def index_sitemap(sitemap_xml)
     sitemap = Zlib::GzipReader.new( StringIO.new(sitemap_xml) ).read
-    Nokogiri::HTML(sitemap).xpath('//loc').each do |loc|
+    Nokogiri::HTML(sitemap).xpath('//loc').each_with_index do |loc, index|
       url = loc.content
       open(url) do |f|
-        items = Microdata::Document.new(f, url).extract_items
-        hash = {}
-        hash[:items] = items.map do |item|
-          item.to_hash
-        end
-        Page.create :microdata => hash, :id => url
-        exit
+        Page.build(url, f) 
       end
+      puts url
     end
   end
 
