@@ -17,7 +17,7 @@ class Page
     hash[:items] = items.map do |item|
       item.to_hash
     end
-    itemtypes = extract_itemtypes(items)
+    itemtypes = extract_itemtypes(items).uniq
     Page.create :sitemap => sitemap_url, 
                 :microdata => hash, 
                 :id => url, :itemtypes => itemtypes
@@ -27,13 +27,15 @@ class Page
 
   def self.extract_itemtypes(items)
     items.map do |item|      
+      nested_types = []
       item.properties.each do |property, values|
         item_values = values.select do |value|
           value.is_a?(Microdata::Item) ? true : false
-        end  
-        extract_itemtypes(item_values)                 
+        end
+        nested_types << extract_itemtypes(item_values)                 
       end
-      item.type
+      extracted_types = [item.type ]
+      extracted_types << nested_types
     end.flatten.compact
   end
 
