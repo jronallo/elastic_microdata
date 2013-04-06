@@ -33,9 +33,10 @@
           <%= image_tag hit['_source']['microdata']['items'].first['properties']['image'].first, :width => 300 %>
         </div>
       <% end -%>
-<pre>
-<%= JSON.pretty_generate(hit['_source']['microdata']).gsub("\n", "<br>").html_safe %>
-</pre>
+
+<%= coderay(JSON.pretty_generate(hit['_source']['microdata'])).html_safe %>
+
+
     </li>
   <% end -%>
 </ul>

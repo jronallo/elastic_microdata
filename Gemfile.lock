@@ -143,6 +143,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  coderay
   guard-livereload
   jquery-rails
   microdata

@@ -4,6 +4,7 @@ gem 'rails', '3.2.13'
 gem 'tire'
 gem 'nokogiri'
 gem 'microdata'
+gem 'coderay'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
