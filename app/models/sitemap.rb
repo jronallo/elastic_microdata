@@ -1,13 +1,9 @@
 class Sitemap
   include Tire::Model::Persistence
-  
-  self.create_elasticsearch_index
 
   property :url, :index => :not_analyzed, :type => :string
-  property :pages, :class => [Page]
-
-
-  def index
+  
+  def crawl
     sitemap_xml = open(url).read
     if sitemap_xml.include?('sitemapindex')
       Nokogiri::HTML(sitemap_xml).xpath('//loc').each do |sitemap_loc|
@@ -29,11 +25,25 @@ class Sitemap
     end
     Nokogiri::HTML(sitemap).xpath('//loc').each_with_index do |loc, index|
       url = loc.content
-      open(url) do |f|
-        Page.build(url, f) 
+      tries = 0
+      begin
+        if tries < 10
+          sleep tries 
+          open(url) do |f|
+            Page.build(@url, url, f) 
+          end
+        end
+      rescue => e 
+        puts e
+        puts e.backtrace
+        puts "Error with: #{url}"
+        tries += 1
+        retry
       end
       puts url
     end
   end
 
 end
+
+Sitemap.create_elasticsearch_index

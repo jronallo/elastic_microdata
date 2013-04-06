@@ -1,24 +1,26 @@
 class Page
 
-  include Tire::Model::Persistence
-
-  
+  include Tire::Model::Persistence  
 
   property :url, :type => :string, :index => :not_analyzed
+  property :sitemap, :type => :string, :index => :not_analyzed
+  property :lastmod, :type => :date
   property :title, :type => :string
   property :description, :type => :string
   property :microdata, :type => :object
   property :itemtypes, :type => :string, :index => :not_analyzed
   property :itemprops, :type => :string, :index => :not_analyzed
 
-  def self.build(url, html)
+  def self.build(sitemap_url, url, html)
     items = Microdata::Document.new(html, url).extract_items
     hash = {}
     hash[:items] = items.map do |item|
       item.to_hash
     end
     itemtypes = extract_itemtypes(items)
-    Page.create :microdata => hash, :id => url, :itemtypes => itemtypes
+    Page.create :sitemap => sitemap_url, 
+                :microdata => hash, 
+                :id => url, :itemtypes => itemtypes
   end
 
   private
