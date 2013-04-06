@@ -13,11 +13,26 @@
 
 <p>Count: <%= @results.total %></p>
 
-<ul>
+<ul id="page_results">
   <% @results.each_with_hit do |page,hit| %>
     <li>
       <%#= debug hit %>
       <%= link_to page.id, page.id, target: '_blank' %> 
+      
+      <% if hit['_source']['microdata']['items'].first['properties']['name'] %>
+        <div>
+          <%= hit['_source']['microdata']['items'].first['properties']['name'].join(' | ') %>
+        </div>
+      <% end -%>
+      <% if hit['_source']['microdata']['items'].first['properties']['thumbnailUrl'] %>
+        <div>
+          <%= image_tag hit['_source']['microdata']['items'].first['properties']['thumbnailUrl'].first, :width => 300 %>
+        </div>
+      <% elsif hit['_source']['microdata']['items'].first['properties']['image'] %>
+        <div>
+          <%= image_tag hit['_source']['microdata']['items'].first['properties']['image'].first, :width => 300 %>
+        </div>
+      <% end -%>
 <pre>
 <%= JSON.pretty_generate(hit['_source']['microdata']).gsub("\n", "<br>").html_safe %>
 </pre>
